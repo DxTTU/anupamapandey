@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎀 Anupama Pandey 🎀</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Quicksand:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fff5f7;
+    --pink-50:#ffe4ec;
+    --pink-100:#ffc9d9;
+    --pink:#ff8fab;
+    --pink-deep:#fb6f92;
+    --cherry:#c9184a;
+    --cherry-dark:#a4133c;
+    --plum:#5c374c;
+    --white:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Quicksand',sans-serif;
+    background:var(--cream);
+    color:var(--plum);
+    overflow-x:hidden;
+    background-image:radial-gradient(var(--pink-50) 1.5px, transparent 1.5px);
+    background-size:28px 28px;
+  }
+  ::selection{background:var(--pink);color:#fff}
+
+  /* ---------- floating petals ---------- */
+  #petals{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+  .petal{position:absolute;top:-40px;font-size:20px;animation:fall linear infinite;opacity:.85}
+  @keyframes fall{
+    0%{transform:translateY(-40px) rotate(0deg)}
+    100%{transform:translateY(110vh) rotate(360deg)}
+  }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;top:14px;left:50%;transform:translateX(-50%);
+    background:rgba(255,255,255,.85);backdrop-filter:blur(10px);
+    border:2px solid var(--pink-100);border-radius:999px;
+    padding:10px 26px;z-index:100;display:flex;gap:22px;align-items:center;
+    box-shadow:0 6px 24px rgba(251,111,146,.18);white-space:nowrap;
+  }
+  nav a{color:var(--cherry);text-decoration:none;font-weight:700;font-size:14px}
+  nav a:hover{color:var(--pink-deep)}
+  nav .brand{font-family:'Parisienne',cursive;font-size:22px;color:var(--cherry-dark)}
+
+  /* ---------- hero ---------- */
+  header{
+    min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:100px 20px 60px;position:relative;
+  }
+  .bow-row{font-size:34px;letter-spacing:8px;animation:bob 3s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .kicker{
+    margin-top:18px;display:inline-block;background:var(--white);
+    border:2px dashed var(--pink);border-radius:999px;padding:8px 22px;
+    font-weight:700;color:var(--cherry);font-size:14px;letter-spacing:2px;text-transform:uppercase;
+  }
+  h1.name{
+    font-family:'Parisienne',cursive;font-size:clamp(64px,12vw,150px);
+    color:var(--cherry-dark);line-height:1.1;margin:14px 0 6px;
+    text-shadow:3px 3px 0 var(--pink-100);
+  }
+  .tagline{font-size:clamp(16px,2.6vw,22px);font-weight:600;color:var(--pink-deep)}
+  .badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
+  .badge{
+    background:var(--white);border:2px solid var(--pink-100);border-radius:999px;
+    padding:8px 18px;font-weight:700;font-size:14px;color:var(--cherry);
+    box-shadow:0 4px 14px rgba(251,111,146,.15);transition:transform .2s;
+  }
+  .badge:hover{transform:translateY(-3px) rotate(-2deg)}
+  .scroll-hint{margin-top:44px;font-size:14px;font-weight:700;color:var(--pink-deep);animation:bob 2s ease-in-out infinite}
+
+  /* ---------- marquee ---------- */
+  .marquee{
+    background:var(--cherry);color:#fff;overflow:hidden;white-space:nowrap;
+    padding:14px 0;transform:rotate(-1.2deg) scale(1.02);
+    border-top:3px solid var(--cherry-dark);border-bottom:3px solid var(--cherry-dark);
+    font-weight:700;letter-spacing:1px;
+  }
+  .marquee span{display:inline-block;padding:0 18px;animation:slide 22s linear infinite}
+  @keyframes slide{to{transform:translateX(-50%)}}
+
+  /* ---------- sections ---------- */
+  section{max-width:1100px;margin:0 auto;padding:90px 22px 30px}
+  .sec-head{text-align:center;margin-bottom:46px}
+  .sec-head .eyebrow{
+    font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--pink-deep);
+  }
+  .sec-head h2{
+    font-family:'DM Serif Display',serif;font-size:clamp(34px,6vw,56px);color:var(--cherry-dark);margin-top:8px;
+  }
+  .sec-head p{margin-top:10px;color:var(--plum);font-weight:500}
+
+  /* ---------- gallery ---------- */
+  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:30px}
+  .polaroid{
+    background:var(--white);padding:12px 12px 46px;border-radius:6px;position:relative;
+    box-shadow:0 10px 30px rgba(201,24,74,.14);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .polaroid:nth-child(odd){transform:rotate(-2.5deg)}
+  .polaroid:nth-child(even){transform:rotate(2deg)}
+  .polaroid:hover{transform:rotate(0deg) scale(1.05);box-shadow:0 18px 44px rgba(201,24,74,.25);z-index:5}
+  .polaroid .tape{
+    position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-4deg);
+    width:90px;height:26px;background:rgba(255,143,171,.65);
+    border-left:2px dashed rgba(255,255,255,.7);border-right:2px dashed rgba(255,255,255,.7);
+  }
+  .polaroid img{width:100%;aspect-ratio:3/3.6;object-fit:cover;border-radius:3px;display:block;background:var(--pink-50)}
+  .polaroid figcaption{
+    font-family:'Parisienne',cursive;font-size:24px;text-align:center;color:var(--cherry-dark);margin-top:10px;
+  }
+
+  /* ---------- favorites ---------- */
+  .faves{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+  .fave{
+    background:var(--white);border:2px solid var(--pink-100);border-radius:24px;padding:30px 24px;
+    text-align:center;box-shadow:0 8px 26px rgba(251,111,146,.12);
+    transition:transform .25s ease;position:relative;overflow:hidden;
+  }
+  .fave:hover{transform:translateY(-6px)}
+  .fave::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:8px;
+    background:linear-gradient(90deg,var(--pink),var(--cherry),var(--pink));
+  }
+  .fave .emoji{font-size:52px;display:block;margin-bottom:12px}
+  .fave h3{font-family:'DM Serif Display',serif;color:var(--cherry-dark);font-size:22px;margin-bottom:8px}
+  .fave p{font-size:15px;font-weight:500;line-height:1.55}
+  .fave .tag{
+    display:inline-block;margin-top:12px;background:var(--pink-50);color:var(--cherry);
+    font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    padding:5px 14px;border-radius:999px;
+  }
+
+  /* ---------- compliment machine ---------- */
+  .machine{
+    background:linear-gradient(135deg,var(--pink-100),var(--pink-50));
+    border:3px dashed var(--pink);border-radius:32px;padding:56px 30px;text-align:center;
+    box-shadow:0 14px 40px rgba(251,111,146,.2);
+  }
+  .machine h2{font-family:'DM Serif Display',serif;font-size:clamp(28px,5vw,44px);color:var(--cherry-dark)}
+  #compliment{
+    min-height:76px;font-family:'Parisienne',cursive;font-size:clamp(26px,4.5vw,40px);
+    color:var(--cherry);margin:22px 0;transition:opacity .25s;
+  }
+  .bow-btn{
+    font-family:'Quicksand',sans-serif;font-weight:700;font-size:18px;color:#fff;
+    background:linear-gradient(135deg,var(--pink-deep),var(--cherry));
+    border:none;border-radius:999px;padding:16px 44px;cursor:pointer;
+    box-shadow:0 10px 26px rgba(201,24,74,.35);transition:transform .2s;
+  }
+  .bow-btn:hover{transform:scale(1.06) rotate(-1deg)}
+  .bow-btn:active{transform:scale(.96)}
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:90px;background:var(--cherry-dark);color:#ffd9e3;text-align:center;
+    padding:54px 20px 44px;border-top:4px solid var(--pink);
+  }
+  footer .big{font-family:'Parisienne',cursive;font-size:44px;color:#fff;margin-bottom:10px}
+  footer p{font-weight:600;font-size:14px;opacity:.9}
+  footer .hearts{font-size:22px;letter-spacing:6px;margin-bottom:14px}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* click hearts */
+  .click-heart{position:fixed;pointer-events:none;z-index:60;font-size:22px;animation:pop .9s ease-out forwards}
+  @keyframes pop{
+    0%{transform:scale(.4) translateY(0);opacity:1}
+    100%{transform:scale(1.4) translateY(-70px);opacity:0}
+  }
+
+  @media(max-width:600px){
+    nav{gap:12px;padding:8px 18px;font-size:12px}
+    nav .brand{font-size:18px}
+  }
+</style>
+</head>
+<body>
+
+<div id="petals"></div>
+
+<nav>
+  <span class="brand">🎀 anupama's world</span>
+  <a href="#gallery">photos</a>
+  <a href="#faves">faves</a>
+  <a href="#machine">serotonin</a>
+</nav>
+
+<header>
+  <div class="bow-row">🎀 💖 🎀</div>
+  <span class="kicker">certified pookie • est. 2026</span>
+  <h1 class="name">Anupama Pandey</h1>
+  <p class="tagline">future vet &nbsp;•&nbsp; professional cutie &nbsp;•&nbsp; ramen enthusiast</p>
+  <div class="badges">
+    <span class="badge">🩺 future Dr. Anupama</span>
+    <span class="badge">🎮 roblox girlie</span>
+    <span class="badge">🍜 spicy ramen lover</span>
+    <span class="badge">🍨 butterscotch supremacy</span>
+    <span class="badge">🍫 kitkat connoisseur</span>
+  </div>
+  <div class="scroll-hint">scroll for the cute stuff ↓</div>
+</header>
+
+<div class="marquee">
+  <span>🎀 future vet 🎀 roblox girlie 🎀 spicy ramen enthusiast 🎀 butterscotch ice cream lover 🎀 kitkat > everything 🎀 pookie certified 🎀 future vet 🎀 roblox girlie 🎀 spicy ramen enthusiast 🎀 butterscotch ice cream lover 🎀 kitkat > everything 🎀 pookie certified 🎀&nbsp;</span>
+</div>
+
+<section id="gallery">
+  <div class="sec-head reveal">
+    <div class="eyebrow">🎀 the gallery of gorgeous 🎀</div>
+    <h2>proof of pretty</h2>
+    <p>exhibit A through J — the court rests 💅</p>
+  </div>
+  <div class="gallery">
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/1a38a95a443e4a1db11994a40c3b8f3dd0b28cfdaf6ef66600b2f328812644a4.jpg" alt="Anupama selfie"><figcaption>certified cutie 🎀</figcaption></figure>
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/e6e4783ac2de23ef1cc3c8aff3ef6c27c236683adf66a7522f96c52be7e27be8.jpg" alt="Anupama selfie"><figcaption>pixel princess ✨</figcaption></figure>
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/cbae65746d05ce745f213734d30732c73eef322666476d1e89ff2e38c99495d5.jpg" alt="Anupama with flower"><figcaption>flower crown era 🌸</figcaption></figure>
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/878db81cd5a94450f05bd5805d5466ea7f68befd6eddae62641546a53fd6e9ea.jpg" alt="Anupama selfie"><figcaption>double the cute 💖</figcaption></figure>
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/541a607c039a2a8aee84f9d56cbb823a72801c172ea2602a7249aed0773f2853.jpg" alt="Anupama at the beach"><figcaption>golden hour goddess 🌅</figcaption></figure>
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/127f1e6f9dfcd043b87c6ab6bccdf1ee8f707357ec802c088d56f533ab3b586e.jpg" alt="Anupama selfie"><figcaption>film cam cutie 📸</figcaption></figure>
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/f22e5432913e97cb743ef1da8dfdef788ff3653b4297473d55371672e70b727a.jpg" alt="Anupama selfie"><figcaption>main character 💅</figcaption></figure>
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/e2c1b74772ba02a30a38cc9d56b86fcb8e8224e0ac8b1142a0ffc813fc648c13.jpg" alt="Anupama selfie"><figcaption>vintage vibes 🎞️</figcaption></figure>
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/edaeeee60a8de27b4a66b8da2dc0b35e7873890c2fbecf9dcea3aa0ed46d69a2.jpg" alt="Anupama selfie"><figcaption>midnight muse 🌙</figcaption></figure>
+    <figure class="polaroid reveal"><span class="tape"></span><img src="photos/32bacaff802265f3d1f6eb85e5208990fd50ed97468c0b35bed3622bc7a5f3b9.jpg" alt="Anupama in pink saree"><figcaption>desi barbie 💖</figcaption></figure>
+  </div>
+</section>
+
+<section id="faves">
+  <div class="sec-head reveal">
+    <div class="eyebrow">🍒 the official starter pack 🍒</div>
+    <h2>anupama lore</h2>
+    <p>scientifically accurate* (*not scientific)</p>
+  </div>
+  <div class="faves">
+    <div class="fave reveal">
+      <span class="emoji">🩺</span>
+      <h3>Future Vet</h3>
+      <p>Dr. Anupama loading… animals already feel safer. Stethoscope era incoming.</p>
+      <span class="tag">main quest</span>
+    </div>
+    <div class="fave reveal">
+      <span class="emoji">🎮</span>
+      <h3>Roblox Grinder</h3>
+      <p>Obbies feared. Tycoons built. Will absolutely carry the squad and then demand snacks.</p>
+      <span class="tag">gamer girl</span>
+    </div>
+    <div class="fave reveal">
+      <span class="emoji">🍜</span>
+      <h3>Spicy Ramen Devotee</h3>
+      <p>Chopstick skills: elite. Spice tolerance: suspicious. Broth: always finished.</p>
+      <span class="tag">foodie arc</span>
+    </div>
+    <div class="fave reveal">
+      <span class="emoji">🍨</span>
+      <h3>Butterscotch Ice Cream</h3>
+      <p>The one true flavor. All other ice creams are just visiting.</p>
+      <span class="tag">dessert royalty</span>
+    </div>
+    <div class="fave reveal">
+      <span class="emoji">🍫</span>
+      <h3>KitKat Supremacy</h3>
+      <p>Have a break? She'll have the whole pack. The crunch is non-negotiable.</p>
+      <span class="tag">chocolate boss</span>
+    </div>
+    <div class="fave reveal">
+      <span class="emoji">🍒</span>
+      <h3>Cherry On Top</h3>
+      <p>Literally the cherry on top of every group chat, every plan, every day.</p>
+      <span class="tag">certified pookie</span>
+    </div>
+  </div>
+</section>
+
+<section id="machine">
+  <div class="machine reveal">
+    <div style="font-size:40px">🎀</div>
+    <h2>the serotonin machine</h2>
+    <p style="font-weight:600;margin-top:8px">feeling down? press the bow. science* says it works.</p>
+    <div id="compliment">press the bow, bestie 💖</div>
+    <button class="bow-btn" onclick="compliment()">🎀 gimme a compliment 🎀</button>
+    <p style="font-size:12px;margin-top:14px;opacity:.7">*not science. just vibes.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="hearts">💖 🎀 🍒 🎀 💖</div>
+  <div class="big">Anupama Pandey</div>
+  <p>made with 💖 by D • pookie certified © 2026<br>no bows were harmed in the making of this website</p>
+</footer>
+
+<script>
+  // falling petals
+  const petalBox = document.getElementById('petals');
+  const petalChars = ['🌸','💖','🎀','🍒','✨'];
+  function makePetal(){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = petalChars[Math.floor(Math.random()*petalChars.length)];
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.fontSize = (14 + Math.random()*18) + 'px';
+    p.style.animationDuration = (6 + Math.random()*8) + 's';
+    petalBox.appendChild(p);
+    setTimeout(()=>p.remove(), 15000);
+  }
+  setInterval(makePetal, 700);
+  for(let i=0;i<8;i++) setTimeout(makePetal, i*300);
+
+  // click hearts
+  const hearts = ['💖','🎀','🍒','✨','💕'];
+  document.addEventListener('click', e=>{
+    if(e.target.closest('button')) return;
+    const h = document.createElement('div');
+    h.className = 'click-heart';
+    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+    h.style.left = e.clientX + 'px';
+    h.style.top = e.clientY + 'px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 950);
+  });
+
+  // reveal on scroll
+  const io = new IntersectionObserver(es=>{
+    es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // compliment machine
+  const compliments = [
+    "you're the human version of a warm hug 💖",
+    "your smile could fix a bad monday 🎀",
+    "future Dr. Anupama — the animals chose wisely 🐾",
+    "roblox lobbies get better when you join 🎮",
+    "you + spicy ramen = elite taste 🍜",
+    "butterscotch walked so you could run 🍨",
+    "kitkat wishes it was as sweet as you 🍫",
+    "certified pookie. no further questions. 🍒",
+    "the group chat's favorite notification 💕",
+    "main character energy, every single day ✨"
+  ];
+  let last = -1;
+  function compliment(){
+    let i;
+    do { i = Math.floor(Math.random()*compliments.length); } while(i === last);
+    last = i;
+    const el = document.getElementById('compliment');
+    el.style.opacity = 0;
+    setTimeout(()=>{ el.textContent = compliments[i]; el.style.opacity = 1; }, 220);
+  }
+</script>
+</body>
+</html>
