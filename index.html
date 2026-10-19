@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Quicksand:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <style>
   :root{
     --cream:#fff5f7;
@@ -31,12 +32,36 @@
   }
   ::selection{background:var(--pink);color:#fff}
 
+  /* ---------- loader ---------- */
+  #loader{
+    position:fixed;inset:0;background:var(--cream);z-index:200;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    transition:opacity .6s ease, visibility .6s;
+  }
+  #loader.done{opacity:0;visibility:hidden}
+  #loader .bow{font-size:64px;animation:loaderBounce 1s ease-in-out infinite}
+  @keyframes loaderBounce{0%,100%{transform:translateY(0) rotate(-8deg) scale(1)}50%{transform:translateY(-22px) rotate(8deg) scale(1.15)}}
+  #loader p{font-family:'Parisienne',cursive;font-size:38px;color:var(--cherry-dark)}
+  #loader .dots::after{content:"";animation:dots 1.2s steps(4) infinite}
+  @keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+
+  /* ---------- scroll progress ---------- */
+  #progress{position:fixed;top:0;left:0;height:5px;width:0%;z-index:150;
+    background:linear-gradient(90deg,var(--pink),var(--cherry));border-radius:0 4px 4px 0}
+
   /* ---------- floating petals ---------- */
   #petals{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
   .petal{position:absolute;top:-40px;font-size:20px;animation:fall linear infinite;opacity:.85}
   @keyframes fall{
     0%{transform:translateY(-40px) rotate(0deg)}
     100%{transform:translateY(110vh) rotate(360deg)}
+  }
+
+  /* ---------- cursor sparkles ---------- */
+  .sparkle{position:fixed;pointer-events:none;z-index:60;font-size:16px;animation:sparkleFloat 1s ease-out forwards}
+  @keyframes sparkleFloat{
+    0%{transform:scale(.5) translateY(0) rotate(0deg);opacity:1}
+    100%{transform:scale(1.2) translateY(-46px) rotate(40deg);opacity:0}
   }
 
   /* ---------- nav ---------- */
@@ -47,8 +72,8 @@
     padding:10px 26px;z-index:100;display:flex;gap:22px;align-items:center;
     box-shadow:0 6px 24px rgba(251,111,146,.18);white-space:nowrap;
   }
-  nav a{color:var(--cherry);text-decoration:none;font-weight:700;font-size:14px}
-  nav a:hover{color:var(--pink-deep)}
+  nav a{color:var(--cherry);text-decoration:none;font-weight:700;font-size:14px;transition:transform .2s}
+  nav a:hover{color:var(--pink-deep);transform:scale(1.12)}
   nav .brand{font-family:'Parisienne',cursive;font-size:22px;color:var(--cherry-dark)}
 
   /* ---------- hero ---------- */
@@ -56,26 +81,39 @@
     min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;padding:100px 20px 60px;position:relative;
   }
+  .float-bow{position:absolute;font-size:30px;opacity:.7;animation:floaty 5s ease-in-out infinite;pointer-events:none}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(-26px) rotate(10deg)}}
   .bow-row{font-size:34px;letter-spacing:8px;animation:bob 3s ease-in-out infinite}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
   .kicker{
     margin-top:18px;display:inline-block;background:var(--white);
     border:2px dashed var(--pink);border-radius:999px;padding:8px 22px;
     font-weight:700;color:var(--cherry);font-size:14px;letter-spacing:2px;text-transform:uppercase;
+    animation:pop-in .8s cubic-bezier(.2,1.4,.4,1) both .9s;
   }
   h1.name{
     font-family:'Parisienne',cursive;font-size:clamp(64px,12vw,150px);
     color:var(--cherry-dark);line-height:1.1;margin:14px 0 6px;
     text-shadow:3px 3px 0 var(--pink-100);
+    animation:pop-in .9s cubic-bezier(.2,1.4,.4,1) both .4s;
   }
-  .tagline{font-size:clamp(16px,2.6vw,22px);font-weight:600;color:var(--pink-deep)}
+  @keyframes pop-in{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+  .tagline{
+    font-size:clamp(16px,2.6vw,22px);font-weight:600;color:var(--pink-deep);min-height:32px;
+  }
+  .tagline .caret{display:inline-block;width:3px;height:1.1em;background:var(--cherry);vertical-align:-2px;animation:blink .8s steps(2) infinite;margin-left:2px}
+  @keyframes blink{50%{opacity:0}}
   .badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
   .badge{
     background:var(--white);border:2px solid var(--pink-100);border-radius:999px;
     padding:8px 18px;font-weight:700;font-size:14px;color:var(--cherry);
     box-shadow:0 4px 14px rgba(251,111,146,.15);transition:transform .2s;
+    animation:pop-in .6s cubic-bezier(.2,1.4,.4,1) both;
   }
-  .badge:hover{transform:translateY(-3px) rotate(-2deg)}
+  .badge:nth-child(1){animation-delay:1.3s}.badge:nth-child(2){animation-delay:1.42s}
+  .badge:nth-child(3){animation-delay:1.54s}.badge:nth-child(4){animation-delay:1.66s}
+  .badge:nth-child(5){animation-delay:1.78s}
+  .badge:hover{transform:translateY(-4px) rotate(-3deg) scale(1.06)}
   .scroll-hint{margin-top:44px;font-size:14px;font-weight:700;color:var(--pink-deep);animation:bob 2s ease-in-out infinite}
 
   /* ---------- marquee ---------- */
@@ -85,8 +123,12 @@
     border-top:3px solid var(--cherry-dark);border-bottom:3px solid var(--cherry-dark);
     font-weight:700;letter-spacing:1px;
   }
-  .marquee span{display:inline-block;padding:0 18px;animation:slide 22s linear infinite}
+  .marquee.rev{background:var(--pink-deep);transform:rotate(1.2deg) scale(1.02)}
+  .marquee .track{display:inline-block;animation:slide 26s linear infinite}
+  .marquee.rev .track{animation:slideRev 30s linear infinite}
+  .marquee span{padding:0 18px}
   @keyframes slide{to{transform:translateX(-50%)}}
+  @keyframes slideRev{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 
   /* ---------- sections ---------- */
   section{max-width:1100px;margin:0 auto;padding:90px 22px 30px}
@@ -96,23 +138,28 @@
   }
   .sec-head h2{
     font-family:'DM Serif Display',serif;font-size:clamp(34px,6vw,56px);color:var(--cherry-dark);margin-top:8px;
+    display:inline-block;
   }
+  .sec-head h2:hover{animation:wiggle .5s ease-in-out}
+  @keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg) scale(1.03)}75%{transform:rotate(3deg) scale(1.03)}}
   .sec-head p{margin-top:10px;color:var(--plum);font-weight:500}
 
   /* ---------- gallery ---------- */
-  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:30px}
+  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:30px;perspective:900px}
   .polaroid{
     background:var(--white);padding:12px 12px 46px;border-radius:6px;position:relative;
     box-shadow:0 10px 30px rgba(201,24,74,.14);
-    transition:transform .3s ease, box-shadow .3s ease;
+    transition:transform .25s ease, box-shadow .25s ease;
+    will-change:transform;
   }
   .polaroid:nth-child(odd){transform:rotate(-2.5deg)}
   .polaroid:nth-child(even){transform:rotate(2deg)}
-  .polaroid:hover{transform:rotate(0deg) scale(1.05);box-shadow:0 18px 44px rgba(201,24,74,.25);z-index:5}
+  .polaroid:hover{box-shadow:0 20px 48px rgba(201,24,74,.3);z-index:5}
   .polaroid .tape{
     position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-4deg);
     width:90px;height:26px;background:rgba(255,143,171,.65);
     border-left:2px dashed rgba(255,255,255,.7);border-right:2px dashed rgba(255,255,255,.7);
+    z-index:2;
   }
   .polaroid img{width:100%;aspect-ratio:3/3.6;object-fit:cover;border-radius:3px;display:block;background:var(--pink-50)}
   .polaroid figcaption{
@@ -126,11 +173,15 @@
     text-align:center;box-shadow:0 8px 26px rgba(251,111,146,.12);
     transition:transform .25s ease;position:relative;overflow:hidden;
   }
-  .fave:hover{transform:translateY(-6px)}
+  .fave:hover{transform:translateY(-8px) rotate(-1deg)}
+  .fave:hover .emoji{animation:emojiBounce .6s ease}
+  @keyframes emojiBounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px) scale(1.2) rotate(-8deg)}70%{transform:translateY(2px) scale(.95)}}
   .fave::before{
     content:"";position:absolute;top:0;left:0;right:0;height:8px;
     background:linear-gradient(90deg,var(--pink),var(--cherry),var(--pink));
+    background-size:200% 100%;animation:shimmer 3s linear infinite;
   }
+  @keyframes shimmer{to{background-position:200% 0}}
   .fave .emoji{font-size:52px;display:block;margin-bottom:12px}
   .fave h3{font-family:'DM Serif Display',serif;color:var(--cherry-dark);font-size:22px;margin-bottom:8px}
   .fave p{font-size:15px;font-weight:500;line-height:1.55}
@@ -140,34 +191,61 @@
     padding:5px 14px;border-radius:999px;
   }
 
+  /* ---------- love letter ---------- */
+  .letter-wrap{display:flex;justify-content:center}
+  .love-letter{
+    background:#fffdf8;border-radius:8px;max-width:560px;width:100%;padding:48px 40px 40px;
+    box-shadow:0 16px 44px rgba(201,24,74,.16);position:relative;
+    transform:rotate(-1.5deg);transition:transform .3s;
+    background-image:repeating-linear-gradient(transparent, transparent 31px, var(--pink-50) 31px, var(--pink-50) 32px);
+  }
+  .love-letter:hover{transform:rotate(0deg) scale(1.02)}
+  .wax{
+    position:absolute;top:-24px;left:50%;transform:translateX(-50%);
+    width:58px;height:58px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, var(--pink-deep), var(--cherry-dark));
+    display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;
+    box-shadow:0 6px 16px rgba(201,24,74,.4);
+  }
+  .love-letter h3{font-family:'Parisienne',cursive;font-size:36px;color:var(--cherry-dark);margin-bottom:14px}
+  .love-letter p{font-size:16px;line-height:32px;font-weight:500}
+  .love-letter .sign{font-family:'Parisienne',cursive;font-size:30px;color:var(--cherry);text-align:right;margin-top:10px}
+
   /* ---------- compliment machine ---------- */
   .machine{
     background:linear-gradient(135deg,var(--pink-100),var(--pink-50));
     border:3px dashed var(--pink);border-radius:32px;padding:56px 30px;text-align:center;
-    box-shadow:0 14px 40px rgba(251,111,146,.2);
+    box-shadow:0 14px 40px rgba(251,111,146,.2);position:relative;overflow:hidden;
   }
+  .machine::before,.machine::after{
+    content:"🎀";position:absolute;font-size:44px;opacity:.35;animation:floaty 4s ease-in-out infinite;
+  }
+  .machine::before{top:18px;left:24px}
+  .machine::after{bottom:18px;right:24px;animation-delay:2s}
   .machine h2{font-family:'DM Serif Display',serif;font-size:clamp(28px,5vw,44px);color:var(--cherry-dark)}
   #compliment{
     min-height:76px;font-family:'Parisienne',cursive;font-size:clamp(26px,4.5vw,40px);
-    color:var(--cherry);margin:22px 0;transition:opacity .25s;
+    color:var(--cherry);margin:22px 0;transition:opacity .25s, transform .25s;
   }
   .bow-btn{
     font-family:'Quicksand',sans-serif;font-weight:700;font-size:18px;color:#fff;
     background:linear-gradient(135deg,var(--pink-deep),var(--cherry));
     border:none;border-radius:999px;padding:16px 44px;cursor:pointer;
     box-shadow:0 10px 26px rgba(201,24,74,.35);transition:transform .2s;
+    animation:btnPulse 2.4s ease-in-out infinite;
   }
-  .bow-btn:hover{transform:scale(1.06) rotate(-1deg)}
-  .bow-btn:active{transform:scale(.96)}
+  @keyframes btnPulse{0%,100%{box-shadow:0 10px 26px rgba(201,24,74,.35)}50%{box-shadow:0 10px 36px rgba(201,24,74,.6)}}
+  .bow-btn:hover{transform:scale(1.08) rotate(-1deg);animation:none}
+  .bow-btn:active{transform:scale(.94)}
 
   /* ---------- footer ---------- */
   footer{
     margin-top:90px;background:var(--cherry-dark);color:#ffd9e3;text-align:center;
-    padding:54px 20px 44px;border-top:4px solid var(--pink);
+    padding:54px 20px 44px;border-top:4px solid var(--pink);position:relative;overflow:hidden;
   }
   footer .big{font-family:'Parisienne',cursive;font-size:44px;color:#fff;margin-bottom:10px}
   footer p{font-weight:600;font-size:14px;opacity:.9}
-  footer .hearts{font-size:22px;letter-spacing:6px;margin-bottom:14px}
+  footer .hearts{font-size:22px;letter-spacing:6px;margin-bottom:14px;animation:bob 3s ease-in-out infinite}
 
   /* ---------- reveal ---------- */
   .reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
@@ -183,25 +261,43 @@
   @media(max-width:600px){
     nav{gap:12px;padding:8px 18px;font-size:12px}
     nav .brand{font-size:18px}
+    .float-bow{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+    #petals{display:none}
   }
 </style>
 </head>
 <body>
 
+<div id="loader">
+  <div class="bow">🎀</div>
+  <p>loading cuteness<span class="dots"></span></p>
+</div>
+
+<div id="progress"></div>
 <div id="petals"></div>
 
 <nav>
   <span class="brand">🎀 anupama's world</span>
   <a href="#gallery">photos</a>
   <a href="#faves">faves</a>
+  <a href="#letter">letter</a>
   <a href="#machine">serotonin</a>
 </nav>
 
 <header>
+  <span class="float-bow" style="top:18%;left:8%;animation-delay:0s">🎀</span>
+  <span class="float-bow" style="top:24%;right:10%;animation-delay:1.2s;font-size:24px">💖</span>
+  <span class="float-bow" style="bottom:22%;left:12%;animation-delay:2s;font-size:26px">🍒</span>
+  <span class="float-bow" style="bottom:28%;right:8%;animation-delay:.6s">🎀</span>
+  <span class="float-bow" style="top:48%;left:4%;animation-delay:1.8s;font-size:22px">✨</span>
+  <span class="float-bow" style="top:52%;right:5%;animation-delay:2.4s;font-size:22px">💕</span>
   <div class="bow-row">🎀 💖 🎀</div>
   <span class="kicker">certified pookie • est. 2026</span>
   <h1 class="name">Anupama Pandey</h1>
-  <p class="tagline">future vet &nbsp;•&nbsp; professional cutie &nbsp;•&nbsp; ramen enthusiast</p>
+  <p class="tagline"><span id="typed"></span><span class="caret"></span></p>
   <div class="badges">
     <span class="badge">🩺 future Dr. Anupama</span>
     <span class="badge">🎮 roblox girlie</span>
@@ -213,7 +309,7 @@
 </header>
 
 <div class="marquee">
-  <span>🎀 future vet 🎀 roblox girlie 🎀 spicy ramen enthusiast 🎀 butterscotch ice cream lover 🎀 kitkat > everything 🎀 pookie certified 🎀 future vet 🎀 roblox girlie 🎀 spicy ramen enthusiast 🎀 butterscotch ice cream lover 🎀 kitkat > everything 🎀 pookie certified 🎀&nbsp;</span>
+  <div class="track"><span>🎀 future vet 🎀 roblox girlie 🎀 spicy ramen enthusiast 🎀 butterscotch ice cream lover 🎀 kitkat &gt; everything 🎀 pookie certified 🎀 future vet 🎀 roblox girlie 🎀 spicy ramen enthusiast 🎀 butterscotch ice cream lover 🎀 kitkat &gt; everything 🎀 pookie certified 🎀&nbsp;</span></div>
 </div>
 
 <section id="gallery">
@@ -282,9 +378,34 @@
   </div>
 </section>
 
+<div class="marquee rev">
+  <div class="track"><span>💌 100% pookie 💌 certified fresh 💌 no bows were harmed 💌 extra sprinkles 💌 100% pookie 💌 certified fresh 💌 no bows were harmed 💌 extra sprinkles 💌&nbsp;</span></div>
+</div>
+
+<section id="letter">
+  <div class="sec-head reveal">
+    <div class="eyebrow">💌 sealed with a bow 💌</div>
+    <h2>a tiny love letter</h2>
+  </div>
+  <div class="letter-wrap reveal">
+    <div class="love-letter">
+      <div class="wax">🎀</div>
+      <h3>dear anupama,</h3>
+      <p>
+        you're the kind of friend who turns ordinary days into festivals.
+        thanks for the laughs, the roblox carries, the ramen recommendations,
+        and for being unapologetically, effortlessly you.<br><br>
+        the future Dr. Anupama is going to do amazing things — the animals
+        don't know how lucky they are yet.<br><br>
+        stay pookie forever 💖
+      </p>
+      <div class="sign">— D 🎀</div>
+    </div>
+  </div>
+</section>
+
 <section id="machine">
   <div class="machine reveal">
-    <div style="font-size:40px">🎀</div>
     <h2>the serotonin machine</h2>
     <p style="font-weight:600;margin-top:8px">feeling down? press the bow. science* says it works.</p>
     <div id="compliment">press the bow, bestie 💖</div>
@@ -300,7 +421,22 @@
 </footer>
 
 <script>
-  // falling petals
+  // ---------- loader ----------
+  const bootTime = Date.now();
+  window.addEventListener('load', ()=>{
+    const wait = Math.max(0, 1100 - (Date.now() - bootTime));
+    setTimeout(()=>document.getElementById('loader').classList.add('done'), wait);
+  });
+  setTimeout(()=>document.getElementById('loader').classList.add('done'), 3500); // safety
+
+  // ---------- scroll progress ----------
+  const prog = document.getElementById('progress');
+  addEventListener('scroll', ()=>{
+    const h = document.documentElement;
+    prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }, {passive:true});
+
+  // ---------- falling petals ----------
   const petalBox = document.getElementById('petals');
   const petalChars = ['🌸','💖','🎀','🍒','✨'];
   function makePetal(){
@@ -316,7 +452,36 @@
   setInterval(makePetal, 700);
   for(let i=0;i<8;i++) setTimeout(makePetal, i*300);
 
-  // click hearts
+  // ---------- cursor sparkle trail (desktop only) ----------
+  if (matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const trailChars = ['✨','💖','🎀','🍒','💕'];
+    let lastTrail = 0, sparkles = 0;
+    addEventListener('mousemove', e=>{
+      const now = Date.now();
+      if (now - lastTrail < 50 || sparkles > 24) return;
+      lastTrail = now; sparkles++;
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.textContent = trailChars[Math.floor(Math.random()*trailChars.length)];
+      s.style.left = (e.clientX - 8 + (Math.random()*16-8)) + 'px';
+      s.style.top = (e.clientY - 8) + 'px';
+      document.body.appendChild(s);
+      setTimeout(()=>{ s.remove(); sparkles--; }, 1000);
+    }, {passive:true});
+  }
+
+  // ---------- typewriter tagline ----------
+  const tagText = "future vet  •  professional cutie  •  ramen enthusiast 💖";
+  const typedEl = document.getElementById('typed');
+  let ti = 0;
+  setTimeout(function type(){
+    if (ti <= tagText.length){
+      typedEl.textContent = tagText.slice(0, ti++);
+      setTimeout(type, 45);
+    }
+  }, 1400);
+
+  // ---------- click hearts ----------
   const hearts = ['💖','🎀','🍒','✨','💕'];
   document.addEventListener('click', e=>{
     if(e.target.closest('button')) return;
@@ -329,13 +494,24 @@
     setTimeout(()=>h.remove(), 950);
   });
 
-  // reveal on scroll
+  // ---------- polaroid 3D tilt ----------
+  document.querySelectorAll('.polaroid').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5;
+      const y = (e.clientY - r.top) / r.height - .5;
+      card.style.transform = `perspective(700px) rotateX(${-y*10}deg) rotateY(${x*12}deg) scale(1.06)`;
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform = ''; });
+  });
+
+  // ---------- reveal on scroll ----------
   const io = new IntersectionObserver(es=>{
     es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
   }, {threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  // compliment machine
+  // ---------- compliment machine + confetti ----------
   const compliments = [
     "you're the human version of a warm hug 💖",
     "your smile could fix a bad monday 🎀",
@@ -348,15 +524,29 @@
     "the group chat's favorite notification 💕",
     "main character energy, every single day ✨"
   ];
+  const confettiColors = ['#ff8fab','#fb6f92','#c9184a','#ffd6e0','#ffffff'];
   let last = -1;
   function compliment(){
     let i;
     do { i = Math.floor(Math.random()*compliments.length); } while(i === last);
     last = i;
     const el = document.getElementById('compliment');
-    el.style.opacity = 0;
-    setTimeout(()=>{ el.textContent = compliments[i]; el.style.opacity = 1; }, 220);
+    el.style.opacity = 0; el.style.transform = 'scale(.85)';
+    setTimeout(()=>{ el.textContent = compliments[i]; el.style.opacity = 1; el.style.transform = 'scale(1)'; }, 220);
+    if (window.confetti){
+      confetti({particleCount: 90, spread: 75, origin:{y:.7}, colors: confettiColors,
+        shapes:['circle','square'], scalar: 1.1});
+      setTimeout(()=>confetti({particleCount: 40, angle: 60, spread: 60, origin:{x:0, y:.8}, colors: confettiColors}), 200);
+      setTimeout(()=>confetti({particleCount: 40, angle: 120, spread: 60, origin:{x:1, y:.8}, colors: confettiColors}), 350);
+    }
   }
+
+  // ---------- welcome confetti ----------
+  setTimeout(()=>{
+    if (window.confetti && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+      confetti({particleCount: 60, spread: 100, origin:{y:.3}, colors: confettiColors});
+    }
+  }, 1800);
 </script>
 </body>
 </html>
